@@ -23,6 +23,29 @@ const CreateUser = async (req, res) => {
   }
 };
 
+const LoginUser = async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.body.email });
+
+    if (user === null) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    let oldPass = user.password;
+    let newPass = req.body.password;
+    const matched = await bcrypt.compare(newPass, oldPass);
+
+    if (!matched) {
+      return res.status(401).send({ message: "Password incorrect" });
+    }
+
+    res.status(200).send({ message: "Welcome " + user.name });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Error");
+  }
+};
+
 const ShowUsers = async (req, res) => {
   try {
     const queryData = req.query;
@@ -124,4 +147,5 @@ module.exports = {
   GetOneUser,
   DeleteUser,
   UpdateUser,
+  LoginUser,
 };
