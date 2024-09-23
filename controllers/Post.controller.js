@@ -1,19 +1,22 @@
 const PostModel = require("../models/Post.model");
+const jwt = require("jsonwebtoken");
 
 const CreatePost = async (req, res) => {
   try {
+    const _id = req.user._id;
+    console.log(_id);
+
     const newPost = new PostModel({
       title: req.body.title,
       content: req.body.content,
-      user: req.body.user_id,
+      user: _id,
     });
-
     console.log(newPost);
-
     const respBD = await newPost.save();
     console.log(respBD);
 
-    res.status(200).send({ message: "created succ", data: respBD });
+    // res.status(200).send({ message: "created succ", data: respBD });
+    res.status(200).send({ message: "created succ" });
   } catch (e) {
     console.log(e);
     res.status(500).send("Error");

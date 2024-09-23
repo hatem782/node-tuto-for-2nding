@@ -1,5 +1,6 @@
 const UserModel = require("../models/User.model.js");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const CreateUser = async (req, res) => {
   try {
@@ -40,7 +41,13 @@ const LoginUser = async (req, res) => {
       return res.status(401).send({ message: "Password incorrect" });
     }
 
-    res.status(200).send({ message: "Welcome " + user.name });
+    // user jawou bahi
+
+    // create BASMA (jwt token)
+
+    const token = jwt.sign({ user }, "ISAMM2024", { expiresIn: "100h" });
+
+    res.status(200).send({ message: "Welcome " + user.name, token });
   } catch (e) {
     console.log(e);
     res.status(500).send("Error");
