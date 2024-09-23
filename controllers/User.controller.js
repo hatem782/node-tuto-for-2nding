@@ -25,15 +25,16 @@ const CreateUser = async (req, res) => {
 
 const LoginUser = async (req, res) => {
   try {
+    // SELECT * from Users where email == req.body.email
     const user = await UserModel.findOne({ email: req.body.email });
 
     if (user === null) {
       return res.status(404).send({ message: "User not found" });
     }
 
-    let oldPass = user.password;
-    let newPass = req.body.password;
-    const matched = await bcrypt.compare(newPass, oldPass);
+    let cryptedPass = user.password;
+    let notCrypedPass = req.body.password;
+    const matched = await bcrypt.compare(notCrypedPass, cryptedPass);
 
     if (!matched) {
       return res.status(401).send({ message: "Password incorrect" });

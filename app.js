@@ -12,7 +12,7 @@ const options = {
     openapi: "3.0.0",
     info: {
       title: "HELLO ISAMM",
-      version: "1.0.0",
+      version: "15.0.0",
       description: "A simple Express Library API",
     },
   },
